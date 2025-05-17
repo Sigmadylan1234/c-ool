@@ -108,6 +108,7 @@ class RFIDApp:
                 buttons[selected[0]].invoke()
 
         highlight()
+        menu_win.focus_set()
         menu_win.bind('<Up>', on_key)
         menu_win.bind('<Down>', on_key)
         menu_win.bind('<Return>', on_key)
