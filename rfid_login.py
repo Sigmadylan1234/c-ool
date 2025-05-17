@@ -42,7 +42,6 @@ class RFIDApp:
         self.master.after(1000, self.fake_rfid_scan)
 
     def fake_rfid_scan(self):
-        # Simulate scanning two cards
         if len(self.cards_scanned) == 0:
             self.cards_scanned.append(CARD_CLOSE)
             self.master.after(1000, self.fake_rfid_scan)
@@ -62,8 +61,7 @@ class RFIDApp:
         self.master.bind('<Escape>', self.close_program)
         tk.Label(self.master, text="[LOGO]", font=("Arial", 24), bg='green').pack(pady=20)
 
-        # Simulate RFID scan after delay (for demonstration)
-        self.master.after(3000, self.simulate_rfid_read, CARD_BOOKS)  # Change to CARD_CLOSE to test closing
+        self.master.after(3000, self.simulate_rfid_read, CARD_BOOKS)
 
     def simulate_rfid_read(self, scanned_card):
         if scanned_card in self.rfid_cards:
@@ -77,7 +75,7 @@ class RFIDApp:
         menu_win.title("Card Action Menu")
         menu_win.geometry("300x150")
         menu_win.configure(bg='green')
-        menu_win.grab_set()  # Focus on this window
+        menu_win.grab_set()
 
         tk.Label(menu_win, text="Choose an action:", font=("Arial", 14), bg='green').pack(pady=10)
 
@@ -90,10 +88,29 @@ class RFIDApp:
             self.launch_alternate_access()
 
         btn_close = tk.Button(menu_win, text="Close Program", command=close_app, bg="red", fg="white", width=20)
-        btn_close.pack(pady=5)
-
         btn_books = tk.Button(menu_win, text="Open Books", command=open_books, bg="darkgreen", fg="white", width=20)
+
+        btn_close.pack(pady=5)
         btn_books.pack(pady=5)
+
+        buttons = [btn_close, btn_books]
+        selected = [0]
+
+        def highlight():
+            for i, btn in enumerate(buttons):
+                btn.configure(relief=tk.SUNKEN if i == selected[0] else tk.RAISED)
+
+        def on_key(event):
+            if event.keysym in ['Up', 'Down']:
+                selected[0] = (selected[0] + (1 if event.keysym == 'Down' else -1)) % len(buttons)
+                highlight()
+            elif event.keysym == 'Return':
+                buttons[selected[0]].invoke()
+
+        highlight()
+        menu_win.bind('<Up>', on_key)
+        menu_win.bind('<Down>', on_key)
+        menu_win.bind('<Return>', on_key)
 
     def check_password(self, event=None):
         password = self.entry.get()
