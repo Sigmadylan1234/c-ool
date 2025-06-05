@@ -1,1 +1,0 @@
-To set this up you will go to the Python.org and install it and install a nother programe at website https://www.rfideas.com/support/tools/downloads/thank-you/1393 and then plug in your Waveid reader and get 2 keys and then open the rfid_login.py file scan your 2 keys and then one key will close the programe and to oter will have the book colecshon opens the password is 5526
